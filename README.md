@@ -1,36 +1,221 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🚨 DOJU – Reality Escape Tracker
 
-## Getting Started
+### 심리적·시간적으로 미뤄둔 현실의 거리를 물리적 도주거리(km)로 환산하는 현실도피 추적 서비스
 
-First, run the development server:
+
+## 🧠 서비스 개요
+
+DOJU(도주거리)는 사람들이 미루고 있는 일과 현실회피 행동을 게임처럼 기록하고 시각화하는 서비스입니다.
+
+사용자는 해야 할 일을 등록하고, 체감 난이도와 현재 상태를 입력하여 자신의 현실도피 정도를 **"도주거리(km)"** 로 환산할 수 있습니다.
+
+도주거리가 늘어날수록 수배 등급이 상승하며, AI 판결문·수감증·벌칙 등의 요소를 통해 현실도피를 유쾌하게 기록하고 돌아볼 수 있습니다.
+
+현실도피라는 누구나 공감할 수 있는 행동을 하나의 세계관과 놀이 경험으로 재해석한 서비스입니다.
+
+
+
+## 📖 프로젝트 소개
+
+DOJU 프론트엔드는 **"현실을 미루는 경험"** 을 게임처럼 재미있게 기록하고 공유할 수 있도록 다음과 같은 UX 목표를 가지고 개발되었습니다.
+
+* 현실도피를 직관적인 거리(km) 개념으로 시각화
+* 사용자의 체감 난이도와 현재 상태를 반영한 현실도피 측정
+* 수배 등급과 검거 시스템을 통한 게이미피케이션 경험 제공
+* AI 기반 판결문 생성으로 개인화된 결과 제공
+* 수감증·판결문 저장 기능을 통한 SNS 공유 경험 제공
+* 로그인 없이 닉네임만으로 3초 내 시작 가능한 간편한 플로우 구축
+
+서비스의 목적은 다음 한 문장으로 요약됩니다.
+
+> **"보이지 않는 현실도피를 누구나 이해할 수 있는 거리로 바꾸는 것"**
+
+
+
+## ✨ 핵심 기능
+
+### 📝 1. 도주 등록
+
+* 해야 할 일 등록
+* 직접 입력 기능 제공
+* 체감 난이도(1~10) 설정
+* 도주 경과일 입력
+
+### 📏 2. 도주거리 계산
+
+* 할 일 난이도
+* 도주 일수
+* 현재 상태 계수
+
+를 기반으로 현실도피 거리를 계산합니다.
+
+도주거리에 따라 다음과 같은 위치로 이동합니다.
+
+* 서울 홍대
+* 서울 강남
+* 수원
+* 대전
+* 부산
+* 후쿠오카
+* 도쿄
+* 하와이
+* LA
+* 멕시코
+
+### 🚨 3. 수배 등급 시스템
+
+도주거리에 따라 자동으로 수배 등급이 결정됩니다.
+
+| 등급          | 설명       |
+| ----------- | -------- |
+| 👀 관심       | 경미한 현실도피 |
+| 🔍 요주의 인물   | 반복적인 회피  |
+| ⚠️ 수배       | 본격적인 도주  |
+| 🚨 전국지명수배   | 중대한 현실도피 |
+| 🌍 인터폴 적색수배 | 국제적 현실도피 |
+
+### 🗺️ 4. 도주 경로 시각화
+
+* 현재 도주 위치 표시
+* 누적 도주거리 확인
+* 단계별 이동 경로 제공
+
+### ⚖️ 5. AI 판결문 생성
+
+Gemini API 기반으로 사용자의
+
+* 도주거리
+* 수배등급
+* 죄목
+* 변명
+
+을 반영한 개인화 판결문을 생성합니다.
+
+### 🏛️ 6. 수감증 발급
+
+검거 이후
+
+* 수감번호
+* 죄목
+* 형량
+* 검거 위치
+
+등이 포함된 수감증을 발급합니다.
+
+### 📸 7. 결과 저장
+
+* 판결문 PNG 저장
+* 수감증 이미지 저장
+* SNS 공유 가능
+
+
+
+## 🌱 서비스 차별점
+
+### 1) 현실도피를 거리로 표현하는 독창적 UX
+
+기존 생산성 서비스는 완료 여부만 기록합니다.
+
+DOJU는 **"얼마나 멀리 도망쳤는가?"** 를 거리라는 개념으로 표현하여 현실도피를 직관적으로 보여줍니다.
+
+### 2) 생산성 서비스와 게임의 결합
+
+할 일 관리 앱의 기능과 게임적 세계관을 결합하여 지속적인 참여를 유도합니다.
+
+### 3) AI 기반 개인화 결과
+
+동일한 거리라도
+
+* 죄목
+* 수배등급
+* 변명
+
+에 따라 완전히 다른 판결문이 생성됩니다.
+
+### 4) 누구나 공감 가능한 소재
+
+* 시험 공부
+* 졸업 프로젝트
+* 취업 준비
+* 과제
+* 고백
+* 부모님께 전화
+* 운동
+* 다이어트
+
+등 누구나 한 번쯤 미뤄본 일들을 소재로 사용하여 높은 공감대를 형성합니다.
+
+### 5) 공유하고 싶은 결과 화면
+
+판결문과 수감증을 이미지로 저장할 수 있어 자연스러운 바이럴 요소를 제공합니다.
+
+
+
+## ⚙️ 기술 스택
+
+| 구분                     | 사용 기술               |
+| ---------------------- | ------------------- |
+| Frontend Framework     | Next.js, TypeScript |
+| Styling                | Tailwind CSS        |
+| State Management       | Zustand             |
+| Backend & Database     | Supabase            |
+| AI                     | Gemini API          |
+| Deployment             | Vercel(예정)        |
+| Version Control        | Git, GitHub         |
+
+
+
+
+## 📂 Project Structure
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+app/
+├── page.tsx
+├── escape/
+├── status/
+├── surrender/
+├── verdict/
+├── prison-card/
+└── api/
+    └── verdict/
+
+components/
+├── MapView
+├── WantedBadge
+├── PrisonCard
+└── VerdictCard
+
+lib/
+├── constants.ts
+├── distance.ts
+├── store.ts
+└── supabase.ts
+
+types/
+└── index.ts
+
+public/
+└── favicon
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🎨 Coding Convention
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+* 컴포넌트: PascalCase
+* hooks / utils: camelCase
+* 폴더명: camelCase
+* import 경로: 절대경로(@/) 사용
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
-## Learn More
 
-To learn more about Next.js, take a look at the following resources:
+## 🌟 비전
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+> **"현실을 미루는 순간마저 기록하고 웃을 수 있게"**
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+DOJU는 사람들이 현실을 미루는 과정을 부정적으로만 바라보지 않고, 자신의 상태를 유쾌하게 돌아보며 다시 현실로 복귀할 수 있도록 돕는 서비스를 목표로 합니다.
 
-## Deploy on Vercel
+우리는 현실도피를 죄책감의 대상이 아니라 기록하고 웃어넘길 수 있는 경험으로 바꾸고자 합니다.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+### 🚔 DOJU
+**심리적·시간적으로 미뤄둔 현실의 거리를 물리적 도주거리(km)로 환산하는 현실도피 추적 서비스**
