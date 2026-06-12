@@ -22,7 +22,7 @@ export default function PrisonCardPage() {
   const seed = currentEscape.distance_km;
   const barWidths = [1,2,1,3,1,2,2,1,3,1,1,2,1,2,3,1,1,2,2,1];
 
-  const shareText = `🏛️ 홍익교도소 수감증\n\n수감번호: ${prisonId}\n죄목: ${currentEscape.task_name} 회피\n도주거리: ${currentEscape.distance_km}km\n수배등급: ${currentEscape.wanted_level}\n형량: ${sentence}\n\n#도주거리 #홍익교도소`;
+  const shareText = `🏛️ 교도소 수감증\n\n수감번호: ${prisonId}\n죄목: ${currentEscape.task_name} 회피\n도주거리: ${currentEscape.distance_km}km\n수배등급: ${currentEscape.wanted_level}\n형량: ${sentence}\n\n#도주거리 #교도소`;
 
   return (
     <div style={{ background: "#0A0A0A", minHeight: "100vh" }}>

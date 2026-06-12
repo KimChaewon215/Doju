@@ -49,7 +49,7 @@ export default function SurrenderPage() {
             검거 완료
           </div>
           <div style={{ fontSize: "13px", color: "#888", marginBottom: "16px" }}>
-            도주가 종료됩니다. 심문을 시작합니다.
+            도주가 종료되었습니다. 심문을 시작합니다.
           </div>
 
           {/* Final record */}
@@ -93,8 +93,9 @@ export default function SurrenderPage() {
         >
           <div
             style={{
-              fontFamily: "'Black Han Sans', sans-serif",
+              fontFamily: "'Noto Sans KR', sans-serif",
               fontSize: "16px",
+              fontWeight: "bold",
               letterSpacing: "2px",
               marginBottom: "14px",
               paddingBottom: "10px",
@@ -128,26 +129,58 @@ export default function SurrenderPage() {
             ))}
           </div>
 
-          <textarea
-            value={customReason}
-            onChange={(e) => { setCustomReason(e.target.value); setSelectedReason(""); }}
-            placeholder="직접 진술하기..."
-            style={{
-              width: "100%",
-              border: "2px solid #ccc",
-              borderRadius: "2px",
-              padding: "10px",
-              fontSize: "14px",
-              fontFamily: "'Noto Sans KR', sans-serif",
-              resize: "vertical",
-              height: "72px",
-              marginBottom: "14px",
-              outline: "none",
-              background: "#f9f9f0",
-              color: "#1A1208",
-            }}
-          />
+          <div
+  style={{
+    display: "flex",
+    gap: "8px",
+    marginBottom: "14px",
+  }}
+>
+        <textarea
+          value={customReason}
+          onChange={(e) => {
+            setCustomReason(e.target.value);
+            setSelectedReason("");
+          }}
+          placeholder="직접 진술하기..."
+          style={{
+            flex: 1,
+            border: "2px solid #ccc",
+            borderRadius: "2px",
+            padding: "10px",
+            fontSize: "14px",
+            fontFamily: "'Noto Sans KR', sans-serif",
+            resize: "vertical",
+            height: "72px",
+            outline: "none",
+            background: "#f9f9f0",
+            color: "#1A1208",
+          }}
+        />
 
+        <button
+          onClick={handleSurrender}
+          disabled={!customReason.trim() || loading}
+          style={{
+            width: "90px",
+            background:
+              customReason.trim() && !loading
+                ? "#FFD600"
+                : "#ddd",
+            color: "#0A0A0A",
+            border: "2px solid #0A0A0A",
+            fontWeight: 800,
+            cursor:
+              customReason.trim() && !loading
+                ? "pointer"
+                : "default",
+            borderRadius: "2px",
+            fontFamily: "'Noto Sans KR', sans-serif",
+          }}
+        >
+          📝 진술
+        </button>
+      </div>
           <button
             onClick={handleSurrender}
             disabled={loading || !finalReason}
@@ -157,7 +190,7 @@ export default function SurrenderPage() {
               color: "#fff",
               border: "none",
               padding: "14px",
-              fontFamily: "'Black Han Sans', sans-serif",
+              fontFamily: "'Noto Sans KR', sans-serif",
               fontSize: "18px",
               letterSpacing: "2px",
               cursor: loading || !finalReason ? "default" : "pointer",

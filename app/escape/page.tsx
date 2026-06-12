@@ -19,12 +19,15 @@ export default function EscapePage() {
 
   const [taskName, setTaskName] = useState("");
   const [taskDiff, setTaskDiff] = useState(6);
-  const [customTask, setCustomTask] = useState("");
   const [days, setDays] = useState(3);
   const [statusName, setStatusName] = useState("");
   const [statusCoef, setStatusCoef] = useState(0);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+
+  const [customTask, setCustomTask] = useState("");
+  const [customTasks, setCustomTasks] = useState<string[]>([]);
+
 
   // Redirect if no nickname
   if (!nickname) {
@@ -32,13 +35,33 @@ export default function EscapePage() {
     return null;
   }
 
-  const finalTask = customTask.trim() || taskName;
-  const finalDiff = customTask.trim() ? 6 : taskDiff;
+  const finalTask = taskName;
+  const finalDiff = taskDiff;
 
   const previewDistance =
     finalTask && statusCoef
       ? calculateDistance(finalDiff, days, statusCoef)
       : null;
+
+  const canAddTask = customTask.trim().length > 0;
+
+     function handleAddTask() {
+      const value = customTask.trim();
+
+      if (!value) return;
+
+      if (
+        TASK_OPTIONS.includes(value) ||
+        customTasks.includes(value)
+      ) {
+        return;
+      }
+
+      setCustomTasks((prev) => [...prev, value]);
+
+      setTaskName(value);
+      setCustomTask("");
+    }
 
   async function handleSubmit() {
     if (!finalTask) { setError("도망치는 일을 선택하거나 입력해주세요."); return; }
@@ -130,69 +153,140 @@ export default function EscapePage() {
           {/* Task selection */}
           <label style={labelStyle}>도망치는 일</label>
           <div style={{ display: "flex", flexWrap: "wrap", gap: "6px", marginBottom: "10px" }}>
-            {TASK_OPTIONS.map((t) => (
-              <button
-                key={t.name}
+            {[...TASK_OPTIONS, ...customTasks].map((t) => (              <button
+                key={t}
                 onClick={() => {
-                  setTaskName(t.name);
-                  setTaskDiff(t.difficulty);
+                  setTaskName(t);
                   setCustomTask("");
                 }}
                 style={{
-                  background: taskName === t.name && !customTask ? "#FFD600" : "#fff",
-                  border: `1.5px solid ${taskName === t.name && !customTask ? "#0A0A0A" : "#ccc"}`,
+                  background: taskName === t && !customTask ? "#FFD600" : "#fff",
+                  border: `1.5px solid ${
+                    taskName === t && !customTask ? "#0A0A0A" : "#ccc"
+                  }`,
                   color: "#1A1208",
                   padding: "6px 12px",
                   fontSize: "13px",
                   fontWeight: 700,
                   cursor: "pointer",
                   borderRadius: "2px",
-                  transition: "all 0.15s",
                 }}
               >
-                {t.name}
+                {t}
               </button>
             ))}
           </div>
-          <input
-            value={customTask}
-            onChange={(e) => { setCustomTask(e.target.value); setTaskName(""); }}
-            placeholder="직접 입력..."
-            style={{
-              width: "100%",
-              border: "2px solid #ccc",
-              borderRadius: "2px",
-              padding: "8px 10px",
-              fontSize: "14px",
-              fontFamily: "'Noto Sans KR', sans-serif",
-              background: "#f9f9f0",
-              color: "#1A1208",
-              marginBottom: "16px",
-              outline: "none",
-            }}
-          />
 
-          {/* Difficulty display */}
-          {(taskName || customTask) && (
-            <div
+          <div
+            style={{
+              display: "flex",
+              gap: "8px",
+              marginBottom: "16px",
+            }}
+          >
+            <input
+              value={customTask}
+              onChange={(e) => setCustomTask(e.target.value)}
+              placeholder="직접 입력..."
               style={{
-                background: "#fff",
-                border: "1px solid #ddd",
+                flex: 1,
+                border: "2px solid #ccc",
                 borderRadius: "2px",
-                padding: "8px 12px",
-                marginBottom: "16px",
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-                fontSize: "13px",
-                color: "#666",
+                padding: "8px 10px",
+                fontSize: "14px",
+                fontFamily: "'Noto Sans KR', sans-serif",
+                background: "#f9f9f0",
+                color: "#1A1208",
+                outline: "none",
+              }}
+            />
+
+           <button
+              onClick={handleAddTask}
+              disabled={!canAddTask}
+              style={{
+                background: canAddTask ? "#FFD600" : "#ddd",
+                border: "2px solid #0A0A0A",
+                borderRadius: "2px",
+                padding: "0 14px",
+                fontWeight: 900,
+                cursor: canAddTask ? "pointer" : "not-allowed",
+                color: canAddTask ? "#0A0A0A" : "#888",
+                whiteSpace: "nowrap",
+                opacity: canAddTask ? 1 : 0.6,
+                transition: "all 0.15s",
               }}
             >
-              <span>난이도 추정치</span>
-              <strong style={{ color: "#E8162E", fontSize: "18px" }}>{finalDiff}</strong>
-            </div>
-          )}
+              📌 등록
+            </button>
+          </div>
 
+
+          <label style={labelStyle}>체감 난이도</label>
+              <div
+                style={{
+                  background: "#fff",
+                  border: "1px solid #ddd",
+                  padding: "14px",
+                  borderRadius: "2px",
+                  marginBottom: "16px",
+                }}
+              >
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    marginBottom: "8px",
+                    fontSize: "13px",
+                    color: "#666",
+                  }}
+                >
+                  <span>
+                    {
+                      ["😌 쉬움", "🙂 보통", "😨 어려움", "💀 악몽"][
+                        Math.min(3, Math.floor((taskDiff - 1) / 3))
+                      ]
+                    }
+                  </span>
+
+                  <strong
+                    style={{
+                      color: "#E8162E",
+                      fontSize: "20px",
+                    }}
+                  >
+                    {taskDiff}
+                  </strong>
+                </div>
+
+                <input
+                  type="range"
+                  min="1"
+                  max="10"
+                  value={taskDiff}
+                  onChange={(e) => setTaskDiff(Number(e.target.value))}
+                  style={{
+                    width: "100%",
+                    accentColor: "#E8162E",
+                    cursor: "pointer",
+                  }}
+                />
+
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    fontSize: "11px",
+                    color: "#999",
+                    marginTop: "4px",
+                  }}
+                >
+                  <span>1</span>
+                  <span>10</span>
+                </div>
+              </div>
+          
+          
           {/* Days */}
           <label style={labelStyle}>도주 경과일</label>
           <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "16px" }}>

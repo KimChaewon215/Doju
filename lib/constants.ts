@@ -1,25 +1,36 @@
 import type { TaskOption, StatusOption, RoutePoint, WantedLevel } from "@/types";
 
-export const TASK_OPTIONS: TaskOption[] = [
-  { name: "DB 과제", difficulty: 7 },
-  { name: "졸업 프로젝트", difficulty: 10 },
-  { name: "시험 공부", difficulty: 8 },
-  { name: "고백하기", difficulty: 9 },
-  { name: "운동하기", difficulty: 4 },
-  { name: "과제", difficulty: 6 },
-  { name: "취업 준비", difficulty: 9 },
-  { name: "청소하기", difficulty: 3 },
-  { name: "다이어트", difficulty: 5 },
-  { name: "부모님께 전화", difficulty: 6 },
+export const TASK_OPTIONS = [
+  "졸업 프로젝트",
+  "시험 공부",
+  "과제",
+  "취업 준비",
+  "운동",
+  "다이어트",
+  "부모님께 전화",
+  "방 청소",
+  "메일 답장",
+  "병원 예약",
+  "치과 가기",
+  "자격증 공부",
+  "토익 공부",
+  "면접 준비",
+  "독서",
+  "고백",
+  "이별 통보",
 ];
 
 export const STATUS_OPTIONS: StatusOption[] = [
-  { name: "멍때리는 중", coefficient: 1.1 },
-  { name: "유튜브 보는 중", coefficient: 1.2 },
-  { name: "야구 보는 중", coefficient: 1.3 },
-  { name: "게임 하는 중", coefficient: 1.4 },
-  { name: "넷플릭스 보는 중", coefficient: 1.5 },
+  
+  { name: "곧 할 예정", coefficient: 1.0 },
+  { name: "조금만 쉬고 할 예정", coefficient: 1.2 },
+  { name: "아직 여유 있음", coefficient: 1.4 },
+  { name: "생각하기 싫음", coefficient: 1.7 },
+  { name: "현실 부정 중", coefficient: 2.0 },
+  { name: "기억에서 삭제함", coefficient: 2.3 },
+  { name: "도망 성공", coefficient: 2.5 },
 ];
+
 
 export const ROUTE_POINTS: RoutePoint[] = [
   { name: "서울 홍대", km: 0, lat: 37.5563, lng: 126.9238 },
@@ -50,7 +61,7 @@ export interface WantedLevelConfig {
 
 export const WANTED_LEVELS: WantedLevelConfig[] = [
   { min: 0, max: 50, level: "관심", color: "#4CAF50", bgColor: "#1a3a1a", emoji: "👀" },
-  { min: 50, max: 150, level: "요주의", color: "#2196F3", bgColor: "#1a2a3a", emoji: "🔍" },
+  { min: 50, max: 150, level: "요주의 인물", color: "#2196F3", bgColor: "#1a2a3a", emoji: "🔍" },
   { min: 150, max: 300, level: "수배", color: "#FF9800", bgColor: "#3a1a00", emoji: "⚠️" },
   { min: 300, max: 500, level: "전국지명수배", color: "#E8162E", bgColor: "#3a0000", emoji: "🚨" },
   { min: 500, max: Infinity, level: "인터폴 적색수배", color: "#fff", bgColor: "#E8162E", emoji: "🌍" },
@@ -65,23 +76,34 @@ export interface PenaltyConfig {
 
 export const PENALTIES: PenaltyConfig[] = [
   { min: 0, max: 50, penalty: "편의점 음료 한 잔", emoji: "🧃" },
-  { min: 50, max: 150, penalty: "아이스 아메리카노 쏘기", emoji: "☕" },
+  { min: 50, max: 150, penalty: "아메리카노 쏘기", emoji: "☕" },
   { min: 150, max: 300, penalty: "점심 한 끼 사기", emoji: "🍱" },
-  { min: 300, max: 500, penalty: "치킨 한 마리 책임지기", emoji: "🍗" },
-  { min: 500, max: 1000, penalty: "1차 술자리 책임지기", emoji: "🍻" },
-  { min: 1000, max: Infinity, penalty: "주말 풀코스 카페 투어", emoji: "🗺️" },
+  { min: 300, max: 500, penalty: "치킨 한 마리 쏘기", emoji: "🍗" },
+  { min: 500, max: 1000, penalty: "1차 술자리 쏘기", emoji: "🍻" },
+  { min: 1000, max: Infinity, penalty: "주말 풀코스 대접", emoji: "🗺️" },
 ];
 
 export const INTERROGATION_REASONS = [
-  "하기 싫었어요",
-  "너무 어려웠어요",
-  "귀찮았어요",
-  "무서웠어요",
-  "내일 하려고 했어요",
-  "컨디션이 안 좋았어요",
+  "생각보다 침대가 너무 편했어요",
+  "유튜브 한 편만 보려고 했어요",
+  "시작하는 게 제일 어려웠어요",
+  "준비가 덜 됐다고 느꼈어요",
+  "완벽하게 하고 싶었어요",
+  "마감이 아직 멀었다고 생각했어요",
+  "망할까 봐 걱정됐어요",
+  "할 일이 너무 적어서 긴장이 안 됐어요",
+  "일단 도망치고 싶었어요",
+  "현실을 외면하고 싶었어요",
+  "왜 해야 하는지 모르겠어요",
+  "나 말고 누군가 해줄 줄 알았어요",
+  "갑자기 다른 일이 더 중요해졌어요",
+  "기분이 안 내켰어요",
+  "미루다 보니 여기까지 왔어요",
+  "저도 제가 왜 이러는지 모르겠어요",
 ];
 
 export const CHARACTERS = [
-  "🏃", "👩‍💻", "🧑‍🎓", "🕵️", "🤠",
-  "👨‍🔬", "👩‍🚀", "🧟", "🦸", "🐢",
+  "🏃", "👩‍💻", "🎓", "☠️",
+  "👨‍🔬", "🧟", "🦸", "🐢", "🐌",
+  "🦕", "🐕", "👽", "🐈","🦝"
 ];

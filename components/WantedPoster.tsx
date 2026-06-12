@@ -46,7 +46,7 @@ const WantedPoster = forwardRef<HTMLDivElement, Props>(
               marginBottom: "4px",
             }}
           >
-            대한민국 경찰청 NATIONAL POLICE
+            경찰청 NATIONAL POLICE
           </div>
           <div
             style={{

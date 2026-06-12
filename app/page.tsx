@@ -74,7 +74,7 @@ export default function HomePage() {
         <div style={{ textAlign: "center", marginBottom: "28px" }} className="fade-up">
           <div
             style={{
-              fontFamily: "'Black Han Sans', sans-serif",
+              fontFamily: "sans-serif",
               fontSize: "13px",
               color: "#FFD600",
               letterSpacing: "4px",
@@ -232,7 +232,7 @@ export default function HomePage() {
               borderRadius: "2px",
             }}
           >
-            {loading ? "잠시만요..." : "🏃 도주 시작"}
+             {loading ? "잠시만요..." : `${selectedChar} 도주 시작`}
           </button>
         </div>
 
@@ -250,7 +250,6 @@ export default function HomePage() {
         >
           ※ 이 서비스는 도주를 권장하지 않습니다.<br />
           ※ 그러나 이미 도망치고 있는 당신을 위해 존재합니다.<br />
-          ※ 모든 도주 기록은 수배 명단에 등재됩니다.
         </div>
 
         {/* Stats flavor text */}
@@ -266,7 +265,7 @@ export default function HomePage() {
           {[
             { n: "12,847", label: "현재 도주 중" },
             { n: "4,291km", label: "최장 도주거리" },
-            { n: "인터폴", label: "최고 수배등급" },
+            { n: "인터폴 적색수배", label: "최고 수배등급" },
           ].map(({ n, label }) => (
             <div
               key={label}

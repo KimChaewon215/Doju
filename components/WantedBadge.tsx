@@ -20,12 +20,14 @@ export default function WantedBadge({ level, km, size = "md" }: Props) {
 
   return (
     <span
-      className={`font-display rounded-sm inline-block tracking-widest ${sizeClasses[size]} ${isInterpol ? "badge-pulse" : ""}`}
-      style={{
+      className={`rounded-sm inline-block tracking-widest ${sizeClasses[size]} ${isInterpol ? "badge-pulse" : ""}`}      style={{
         background: config.bgColor,
         color: config.color,
         border: `2px solid ${config.color}`,
         letterSpacing: "2px",
+        fontFamily: "'Noto Sans KR', sans-serif",
+        fontWeight: 600,
+        padding: 8,
       }}
     >
       {config.emoji} {level}

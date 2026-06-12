@@ -20,20 +20,19 @@ export default function StatusPage() {
 
   const penalty = getPenalty(currentEscape.distance_km);
 
-  const tabStyle = (active: boolean): React.CSSProperties => ({
-    flex: 1,
-    background: active ? "#FFD600" : "transparent",
-    border: "none",
-    color: active ? "#0A0A0A" : "#666",
-    padding: "10px 4px",
-    fontSize: "12px",
-    fontWeight: 700,
-    cursor: "pointer",
-    letterSpacing: "1px",
-    fontFamily: "'Black Han Sans', sans-serif",
-    borderRight: "1px solid #333",
-    transition: "all 0.15s",
-  });
+  const tabStyle = (active: boolean) => ({
+  flex: 1,
+  padding: "18px",
+  border: "none",
+  cursor: "pointer",
+
+  fontFamily: "'Noto Sans KR', sans-serif",
+  fontWeight: 600,
+  fontSize: "15px",
+
+  background: active ? "#FFD600" : "#000",
+  color: active ? "#000" : "#fff",
+});
 
   return (
     <div style={{ background: "#0A0A0A", minHeight: "100vh" }}>
@@ -59,7 +58,7 @@ export default function StatusPage() {
 
       <div style={{ maxWidth: "480px", margin: "0 auto", padding: "16px" }}>
         {/* Tabs */}
-        <div style={{ display: "flex", border: "1px solid #333", borderRadius: "2px", overflow: "hidden", marginBottom: "16px" }}>
+        <div style={{ display: "flex", border: "1px solid #333", borderRadius: "2px", overflow: "hidden", marginBottom: "16px",  fontFamily: "'Noto Sans KR', sans-serif"}}>
           <button style={tabStyle(activeTab === "status")} onClick={() => setActiveTab("status")}>현황</button>
           <button style={tabStyle(activeTab === "wanted")} onClick={() => setActiveTab("wanted")}>수배지</button>
           <button style={{ ...tabStyle(activeTab === "prison"), borderRight: "none" }} onClick={() => setActiveTab("prison")}>수감증</button>
@@ -84,22 +83,22 @@ export default function StatusPage() {
                 <span style={{ fontSize: "24px", color: "#aaa", marginLeft: "4px" }}>km</span>
               </div>
               <div style={{ fontSize: "16px", fontWeight: 700, color: "#fff", margin: "8px 0 4px" }}>
-                {currentEscape.location} 근처
+                {currentEscape.location}
               </div>
               <div style={{ fontSize: "12px", color: "#888" }}>현재 도주 중 🏃</div>
             </div>
 
             {/* Badge */}
-            <div style={{ display: "flex", justifyContent: "center", margin: "12px 0" }}>
+            <div style={{ display: "flex", justifyContent: "center", margin: "12px 0"}}>
               <WantedBadge level={currentEscape.wanted_level} km={currentEscape.distance_km} size="md" />
             </div>
 
             {/* Stats */}
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "8px", margin: "12px 0" }}>
               {[
-                { val: `${currentEscape.days_escaped}일`, label: "도주일수" },
+                { val: `${currentEscape.days_escaped}일`, label: "도주 일수" },
                 { val: `${currentEscape.distance_km}km`, label: "이동거리" },
-                { val: penalty.emoji, label: penalty.penalty },
+                { val: penalty.penalty, label: "벌칙"},
               ].map(({ val, label }) => (
                 <div
                   key={label}
@@ -159,13 +158,14 @@ export default function StatusPage() {
                 border: "2px solid #E8162E",
                 color: "#E8162E",
                 padding: "12px",
-                fontFamily: "'Black Han Sans', sans-serif",
+                fontFamily: "'Noto Sans KR', sans-serif",
                 fontSize: "16px",
                 letterSpacing: "2px",
                 cursor: "pointer",
                 borderRadius: "2px",
                 marginBottom: "8px",
                 transition: "all 0.2s",
+
               }}
               onMouseEnter={(e) => { e.currentTarget.style.background = "#E8162E"; e.currentTarget.style.color = "#fff"; }}
               onMouseLeave={(e) => { e.currentTarget.style.background = "transparent"; e.currentTarget.style.color = "#E8162E"; }}
@@ -180,7 +180,7 @@ export default function StatusPage() {
                 border: "2px solid #0A0A0A",
                 color: "#0A0A0A",
                 padding: "12px",
-                fontFamily: "'Black Han Sans', sans-serif",
+                fontFamily: "'Noto Sans KR', sans-serif",
                 fontSize: "14px",
                 letterSpacing: "2px",
                 cursor: "pointer",
@@ -236,12 +236,11 @@ function WantedPosterTab() {
       >
         {/* Header */}
         <div style={{ background: "#E8162E", borderBottom: "3px solid #0A0A0A", padding: "12px", textAlign: "center" }}>
-          <div style={{ fontFamily: "'Black Han Sans',sans-serif", fontSize: "11px", color: "rgba(255,255,255,0.8)", letterSpacing: "4px", marginBottom: "4px" }}>대한민국 경찰청</div>
           <div style={{ fontFamily: "'Black Han Sans',sans-serif", fontSize: "26px", color: "#fff", letterSpacing: "5px" }}>🚨 지명수배 🚨</div>
         </div>
         <div style={{ padding: "14px" }}>
           {/* Mugshot */}
-          <div style={{ width: "80px", height: "80px", background: "#ddd", border: "3px solid #0A0A0A", borderRadius: "2px", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "44px", margin: "0 auto 10px", position: "relative" }}>
+          <div style={{ width: "80px", height: "80px", background: "153,153,153" , border: "3px solid #0A0A0A", borderRadius: "2px", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "44px", margin: "0 auto 10px", position: "relative", paddingBottom: "15px" }}>
             {character}
             <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, background: "#0A0A0A", color: "#FFD600", fontSize: "9px", fontWeight: 700, textAlign: "center", padding: "2px", letterSpacing: "1px" }}>용의자</div>
           </div>
@@ -347,8 +346,8 @@ function PrisonCardTab() {
       </div>
       <div id="prison-card-el" style={{ background: "#0A1628", border: "3px solid #FFD600", borderRadius: "6px", overflow: "hidden", maxWidth: "360px", margin: "0 auto", fontFamily: "'Noto Sans KR',sans-serif" }}>
         <div style={{ background: "#FFD600", padding: "14px 16px", textAlign: "center" }}>
-          <div style={{ fontFamily: "'Black Han Sans',sans-serif", fontSize: "20px", color: "#0A0A0A", letterSpacing: "4px" }}>홍익교도소</div>
-          <div style={{ fontSize: "10px", color: "#555", letterSpacing: "3px" }}>HONGIK CORRECTIONAL FACILITY</div>
+          <div style={{ fontFamily: "'Black Han Sans',sans-serif", fontSize: "20px", color: "#0A0A0A", letterSpacing: "4px" }}>교도소</div>
+          <div style={{ fontSize: "10px", color: "#555", letterSpacing: "3px" }}> CORRECTIONAL FACILITY</div>
         </div>
         <div style={{ padding: "16px", color: "#fff" }}>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "14px", paddingBottom: "12px", borderBottom: "1px solid rgba(255,255,255,0.15)" }}>
@@ -380,7 +379,7 @@ function PrisonCardTab() {
                 <div key={i} style={{ width: `${w*2}px`, height: `${12 + ((seed*(i+1))%12)}px`, background: "rgba(255,255,255,0.4)", borderRadius: "1px" }} />
               ))}
             </div>
-            <div style={{ fontSize: "9px", color: "rgba(255,255,255,0.3)", letterSpacing: "3px" }}>HJI-2026-{String(seed).padStart(6,"0")}</div>
+            <div style={{ fontSize: "9px", color: "rgba(255,255,255,0.3)", letterSpacing: "3px" }}>DOJU-2026-{String(seed).padStart(6,"0")}</div>
           </div>
         </div>
       </div>
