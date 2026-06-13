@@ -1,7 +1,7 @@
 export type WantedLevel =
   | "관심"
   | "요주의 인물"
-  | "수배"
+  | "일반 수배"
   | "전국지명수배"
   | "인터폴 적색수배";
 
@@ -62,4 +62,16 @@ export interface EscapeFormData {
   daysEscaped: number;
   currentStatus: string;
   statusCoefficient: number;
+}
+
+// @/types 파일 내의 Verdict 정의 부분
+export interface Verdict {
+  id: string; // 혹은 number
+  escape_id: string;
+  interrogation_answer: string;
+  verdict_text: string;
+  sentence: string;
+  
+  // ⭐ 이 줄을 인터페이스 내부에 추가해 줍니다.
+  realityMission?: string; 
 }

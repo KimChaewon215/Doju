@@ -51,7 +51,7 @@ const PrisonCard = forwardRef<HTMLDivElement, Props>(
               marginBottom: "2px",
             }}
           >
-            교도소
+            현실도피 추적국
           </div>
           <div style={{ fontSize: "10px", color: "#555", letterSpacing: "3px" }}>
             HONGIK CORRECTIONAL FACILITY

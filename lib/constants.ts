@@ -62,7 +62,7 @@ export interface WantedLevelConfig {
 export const WANTED_LEVELS: WantedLevelConfig[] = [
   { min: 0, max: 50, level: "관심", color: "#4CAF50", bgColor: "#1a3a1a", emoji: "👀" },
   { min: 50, max: 150, level: "요주의 인물", color: "#2196F3", bgColor: "#1a2a3a", emoji: "🔍" },
-  { min: 150, max: 300, level: "수배", color: "#FF9800", bgColor: "#3a1a00", emoji: "⚠️" },
+  { min: 150, max: 300, level: "일반 수배", color: "#FF9800", bgColor: "#3a1a00", emoji: "⚠️" },
   { min: 300, max: 500, level: "전국지명수배", color: "#E8162E", bgColor: "#3a0000", emoji: "🚨" },
   { min: 500, max: Infinity, level: "인터폴 적색수배", color: "#fff", bgColor: "#E8162E", emoji: "🌍" },
 ];

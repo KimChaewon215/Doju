@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { useApp } from "@/lib/store";
 import WantedBadge from "@/components/WantedBadge";
 import EscapeMap from "@/components/EscapeMap";
-import { getPenalty } from "@/lib/distance";
+import { generatePrisonId, getSentence, getPenalty } from "@/lib/distance";
 
 export default function StatusPage() {
   const router = useRouter();
@@ -14,25 +14,21 @@ export default function StatusPage() {
 
   useEffect(() => {
     if (!nickname || !currentEscape) router.push("/");
-  }, [nickname, currentEscape]);
+  }, [nickname, currentEscape, router]);
 
   if (!currentEscape) return null;
 
-  const penalty = getPenalty(currentEscape.distance_km);
-
   const tabStyle = (active: boolean) => ({
-  flex: 1,
-  padding: "18px",
-  border: "none",
-  cursor: "pointer",
-
-  fontFamily: "'Noto Sans KR', sans-serif",
-  fontWeight: 600,
-  fontSize: "15px",
-
-  background: active ? "#FFD600" : "#000",
-  color: active ? "#000" : "#fff",
-});
+    flex: 1,
+    padding: "18px",
+    border: "none",
+    cursor: "pointer",
+    fontFamily: "'Noto Sans KR', sans-serif",
+    fontWeight: 600,
+    fontSize: "15px",
+    background: active ? "#FFD600" : "#000",
+    color: active ? "#000" : "#fff",
+  });
 
   return (
     <div style={{ background: "#0A0A0A", minHeight: "100vh" }}>
@@ -58,7 +54,7 @@ export default function StatusPage() {
 
       <div style={{ maxWidth: "480px", margin: "0 auto", padding: "16px" }}>
         {/* Tabs */}
-        <div style={{ display: "flex", border: "1px solid #333", borderRadius: "2px", overflow: "hidden", marginBottom: "16px",  fontFamily: "'Noto Sans KR', sans-serif"}}>
+        <div style={{ display: "flex", border: "1px solid #333", borderRadius: "2px", overflow: "hidden", marginBottom: "16px", fontFamily: "'Noto Sans KR', sans-serif"}}>
           <button style={tabStyle(activeTab === "status")} onClick={() => setActiveTab("status")}>현황</button>
           <button style={tabStyle(activeTab === "wanted")} onClick={() => setActiveTab("wanted")}>수배지</button>
           <button style={{ ...tabStyle(activeTab === "prison"), borderRight: "none" }} onClick={() => setActiveTab("prison")}>수감증</button>
@@ -94,11 +90,10 @@ export default function StatusPage() {
             </div>
 
             {/* Stats */}
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "8px", margin: "12px 0" }}>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px", margin: "12px 0" }}>
               {[
                 { val: `${currentEscape.days_escaped}일`, label: "도주 일수" },
-                { val: `${currentEscape.distance_km}km`, label: "이동거리" },
-                { val: penalty.penalty, label: "벌칙"},
+                { val: `${currentEscape.distance_km}km`, label: "이동 거리" },
               ].map(({ val, label }) => (
                 <div
                   key={label}
@@ -113,7 +108,7 @@ export default function StatusPage() {
                   <div style={{ fontFamily: "'Black Han Sans',sans-serif", fontSize: "18px", color: "#FFD600", lineHeight: 1, marginBottom: "4px" }}>
                     {val}
                   </div>
-                  <div style={{ fontSize: "10px", color: "#666", letterSpacing: "1px" }}>{label}</div>
+                  <div style={{ fontSize: "12px", color: "#666", letterSpacing: "1px" }}>{label}</div>
                 </div>
               ))}
             </div>
@@ -143,10 +138,6 @@ export default function StatusPage() {
                 <span style={{ color: "#666" }}>도주 중 상태</span>
                 <span style={{ fontWeight: 700 }}>{currentEscape.current_status}</span>
               </div>
-              <div style={{ display: "flex", justifyContent: "space-between" }}>
-                <span style={{ color: "#666" }}>검거 시 벌칙</span>
-                <span style={{ fontWeight: 700, color: "#FFD600" }}>{penalty.penalty}</span>
-              </div>
             </div>
 
             {/* CTA buttons */}
@@ -165,7 +156,6 @@ export default function StatusPage() {
                 borderRadius: "2px",
                 marginBottom: "8px",
                 transition: "all 0.2s",
-
               }}
               onMouseEnter={(e) => { e.currentTarget.style.background = "#E8162E"; e.currentTarget.style.color = "#fff"; }}
               onMouseLeave={(e) => { e.currentTarget.style.background = "transparent"; e.currentTarget.style.color = "#E8162E"; }}
@@ -212,15 +202,15 @@ export default function StatusPage() {
 
 function WantedPosterTab() {
   const { currentEscape, character, nickname } = useApp();
-  const router = useRouter();
+  const router = useRouter(); 
+  const arrestMemo = (currentEscape as any)?.arrestMemo || "현실 복귀 시급";
+
   if (!currentEscape) return null;
 
-  const penalty = getPenalty(currentEscape.distance_km);
-  const shareText = `🚨 지명수배 🚨\n\n${nickname}이(가) "${currentEscape.task_name}"을(를) ${currentEscape.days_escaped}일째 회피 중!\n총 도주거리: ${currentEscape.distance_km}km\n현재위치: ${currentEscape.location}\n수배등급: ${currentEscape.wanted_level}\n검거 시 벌칙: ${penalty.penalty}\n\n#도주거리 #${currentEscape.wanted_level}`;
+  const shareText = `🚨 지명수배 🚨\n\n${nickname}이(가) "${currentEscape.task_name}"을(를) ${currentEscape.days_escaped}일째 회피 중!\n\n총 도주거리: ${currentEscape.distance_km}km\n현재위치: ${currentEscape.location}\n수배등급: ${currentEscape.wanted_level}\nAI 체포메모: ${arrestMemo}\n\n#도주거리 #${currentEscape.wanted_level}`;
 
   return (
     <div>
-      {/* Inline poster (no ref needed for text display — download via screenshot tip) */}
       <div
         id="poster-card"
         style={{
@@ -240,7 +230,7 @@ function WantedPosterTab() {
         </div>
         <div style={{ padding: "14px" }}>
           {/* Mugshot */}
-          <div style={{ width: "80px", height: "80px", background: "153,153,153" , border: "3px solid #0A0A0A", borderRadius: "2px", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "44px", margin: "0 auto 10px", position: "relative", paddingBottom: "15px" }}>
+          <div style={{ width: "80px", height: "80px", background: "rgb(153,153,153)" , border: "3px solid #0A0A0A", borderRadius: "2px", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "44px", margin: "0 auto 10px", position: "relative", paddingBottom: "15px" }}>
             {character}
             <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, background: "#0A0A0A", color: "#FFD600", fontSize: "9px", fontWeight: 700, textAlign: "center", padding: "2px", letterSpacing: "1px" }}>용의자</div>
           </div>
@@ -267,8 +257,8 @@ function WantedPosterTab() {
           </div>
           {/* Reward */}
           <div style={{ background: "#FFD600", border: "2px solid #0A0A0A", padding: "8px", textAlign: "center", marginTop: "10px" }}>
-            <div style={{ fontSize: "9px", fontWeight: 700, letterSpacing: "2px", color: "#666", marginBottom: "2px" }}>검거 시 벌칙</div>
-            <div style={{ fontFamily: "'Black Han Sans',sans-serif", fontSize: "16px", color: "#0A0A0A" }}>{penalty.emoji} {penalty.penalty}</div>
+            <div style={{ fontSize: "9px", fontWeight: 700, letterSpacing: "2px", color: "#666", marginBottom: "2px" }}> 체포 세부내용 </div>
+            <div style={{ fontFamily: "'Black Han Sans',sans-serif", fontSize: "16px", color: "#0A0A0A" }}>🚨 {arrestMemo}</div>
           </div>
           <div style={{ marginTop: "8px", fontSize: "9px", color: "#aaa", display: "flex", justifyContent: "space-between" }}>
             <span>도주거리.kr</span>
@@ -318,12 +308,83 @@ function WantedPosterTab() {
 }
 
 function PrisonCardTab() {
-  const { currentEscape, character, nickname } = useApp();
+  const { currentEscape, character, nickname, currentVerdict } = useApp();
   const router = useRouter();
+
+  const [aiMission, setAiMission] = useState("");
+  const [loading, setLoading] = useState(true);
+
+  const currentTask = currentEscape?.task_name || "";
+  const dynamicFallback = currentTask 
+    ? `오늘 안에 [${currentTask}] 목적을 위해\n최소 10분 이상 착수할 것`
+    : "오늘 안에 현실을 마주하고\n10분 이상 착수할 것";
+
+  useEffect(() => {
+    if (!nickname || !currentEscape) return;
+
+    const fetchLiveMission = async () => {
+      try {
+        setLoading(true);
+        const res = await fetch("/api/reality-mission", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            nickname,
+            task: currentEscape.task_name,
+            distance: currentEscape.distance_km,
+            reason: currentEscape.current_status || "현실 도주",
+            wantedLevel: currentEscape.wanted_level,
+          }),
+        });
+
+        if (!res.ok) throw new Error("미션 패치 실패");
+        const data = await res.json();
+        
+        if (data && data.mission) {
+          if (typeof data.mission === "object") {
+            // 🌟 중괄호 탈출을 위한 딥 파싱(Deep Parsing) 전술
+            // Case 1: data.mission.text (일반적인 텍스트 필드)
+            // Case 2: data.mission.content (API 응답 필드)
+            // Case 3: data.mission.mission (내부에 동일한 이름의 키가 또 있을 경우)
+            // Case 4: Gemini의 candidates[0].content.parts[0].text 구조 대응
+            const rawText = 
+              data.mission.text || 
+              data.mission.content || 
+              data.mission.mission || 
+              data.mission.message ||
+              data.mission.candidates?.[0]?.content?.parts?.[0]?.text;
+
+            if (rawText) {
+              setAiMission(rawText);
+            } else {
+              // 위 키값에 안 걸릴 경우, 백엔드가 내려준 Object의 첫 번째 Value를 강제로 추출
+              const firstValue = Object.values(data.mission)[0];
+              if (typeof firstValue === "string") {
+                setAiMission(firstValue);
+              } else {
+                setAiMission(JSON.stringify(data.mission));
+              }
+            }
+          } else {
+            // 백엔드가 순수 string으로 내려줬을 때
+            setAiMission(data.mission);
+          }
+        } else {
+          setAiMission((currentVerdict as any)?.realityMission || dynamicFallback);
+        }
+      } catch (err) {
+        console.error("실시간 미션 연동 오류:", err);
+        setAiMission((currentVerdict as any)?.realityMission || dynamicFallback);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchLiveMission();
+  }, [nickname, currentEscape, currentVerdict, dynamicFallback]);
+
   if (!currentEscape) return null;
 
-  const { getSentence, generatePrisonId } = require("@/lib/distance");
-  const sentence = getSentence(currentEscape.distance_km, currentEscape.days_escaped);
   const prisonId = generatePrisonId(currentEscape.distance_km);
   const seed = currentEscape.distance_km;
   const barWidths = [1,2,1,3,1,2,2,1,3,1,1,2,1,2,3,1,1,2];
@@ -369,10 +430,23 @@ function PrisonCardTab() {
               <span style={{ fontWeight: 700, color: red ? "#ff6b6b" : yellow ? "#FFD600" : "#fff" }}>{v}</span>
             </div>
           ))}
+          
+          {/* 현실 복귀 명령 */}
           <div style={{ textAlign: "center", marginTop: "14px", padding: "12px", background: "rgba(255,214,0,0.08)", border: "1px solid rgba(255,214,0,0.3)", borderRadius: "4px" }}>
-            <div style={{ fontSize: "10px", color: "rgba(255,255,255,0.5)", letterSpacing: "3px", marginBottom: "6px" }}>예상 형량</div>
-            <div style={{ fontFamily: "'Black Han Sans',sans-serif", fontSize: "22px", color: "#FFD600" }}>{sentence}</div>
+            <div style={{ fontSize: "10px", color: "rgba(255,255,255,0.5)", letterSpacing: "3px", marginBottom: "6px" }}>현실 복귀 명령</div>
+            <div 
+              style={{ 
+                fontFamily: "'Black Han Sans',sans-serif", 
+                fontSize: "16px", 
+                color: "#FFD600",
+                lineHeight: 1.4,
+                whiteSpace: "pre-line"
+              }}
+            >
+              {loading ? "수사관 분석 중..." : aiMission}
+            </div>
           </div>
+          
           <div style={{ marginTop: "12px", display: "flex", flexDirection: "column", alignItems: "center", gap: "4px" }}>
             <div style={{ display: "flex", gap: "2px", height: "24px", alignItems: "flex-end" }}>
               {barWidths.map((w, i) => (

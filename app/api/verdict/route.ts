@@ -58,6 +58,7 @@ export async function POST(req: Request) {
 9. 단, 되도않는 유머를 시도해서는 안된다.
 10. 거리와 변명에 따라 형량을 다르게 판단한다.
 11. 판결문은 반드시 개성 있게 작성한다.
+12. 마지막에 현실 복귀 명령을 작성한다.
 
 출력 형식:
 
@@ -67,6 +68,7 @@ export async function POST(req: Request) {
 
 【판사 한줄평】
 (한줄)
+
 
 피고인: ${nickname}
 
@@ -104,13 +106,18 @@ ${reason}
       throw new Error("Gemini 응답 없음");
     }
 
-    const text =
-      result.response.text() ||
-      "재판부는 판결문 작성에 실패하였다.";
+  const text =
+  await result.response.text();
 
+  const missionMatch =
+    text.match(/【현실 복귀 명령】\s*([\s\S]*)/);
+
+  const realityMission =
+    missionMatch?.[1]?.trim();
     return NextResponse.json({
-      verdict: text,
-    });
+    verdict: text,
+    realityMission,
+  });
   } catch (error) {
     console.error("Gemini Error:", error);
 
