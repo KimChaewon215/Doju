@@ -99,11 +99,7 @@ function VerdictContent() {
       // 각각의 전용 라우터에서 보내주는 응답 데이터 필드 매핑
       setVerdictText(verdictData.verdict);
       
-      const taskBasedFallback = currentEscape.task_name 
-        ? `오늘 안에 [${currentEscape.task_name}] 목적을 위해\n최소 10분 이상 착수할 것`
-        : "오늘 안에 10분 이상 착수할 것";
-
-      // reality-mission API가 반환하는 { mission } 값을 우선 적용하고 없으면 죄목 기본값 적용
+      const taskBasedFallback = currentEscape.task_name // reality-mission API가 반환하는 { mission } 값을 우선 적용하고 없으면 죄목 기본값 적용
       const parsedMission = missionData.mission || verdictData.realityMission || taskBasedFallback;
       setRealityMission(parsedMission);
 

@@ -63,7 +63,6 @@ export async function POST(req: Request) {
   } catch (error) {
     console.error("Reality Mission API Error:", error);
     return NextResponse.json({
-      mission: "오늘 안에 10분 이상 착수할 것",
     });
   }
 }

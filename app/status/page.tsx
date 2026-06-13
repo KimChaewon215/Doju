@@ -411,8 +411,31 @@ function PrisonCardTab() {
           <div style={{ fontSize: "10px", color: "#555", letterSpacing: "3px" }}> CORRECTIONAL FACILITY</div>
         </div>
         <div style={{ padding: "16px", color: "#fff" }}>
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "14px", paddingBottom: "12px", borderBottom: "1px solid rgba(255,255,255,0.15)" }}>
-            <div style={{ width: "58px", height: "58px", background: "rgba(255,255,255,0.1)", border: "2px solid rgba(255,255,255,0.3)", borderRadius: "4px", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "34px" }}>{character}</div>
+          <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", marginBottom: "14px", paddingBottom: "12px", borderBottom: "1px solid rgba(255,255,255,0.15)" }}>
+
+            <div
+              style={{
+                width: "70px",
+                height: "70px",
+                background: "rgba(255,255,255,0.1)",
+                border: "2px solid rgba(255,255,255,0.3)",
+                borderRadius: "4px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                fontSize: "34px",
+                overflow: "hidden",
+              }}
+            >
+              <span
+                style={{
+                  transform: "translateY(-4px)",
+                  display: "block",
+                }}
+              >
+                {character}
+              </span>
+            </div>
             <div style={{ textAlign: "right" }}>
               <div style={{ fontFamily: "'Black Han Sans',sans-serif", fontSize: "18px", color: "#FFD600" }}>{prisonId}</div>
               <div style={{ fontSize: "20px", fontWeight: 900, marginTop: "2px" }}>{nickname}</div>

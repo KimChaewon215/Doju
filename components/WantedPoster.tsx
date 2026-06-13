@@ -63,41 +63,29 @@ const WantedPoster = forwardRef<HTMLDivElement, Props>(
 
         {/* Body */}
         <div style={{ padding: "16px" }}>
-          {/* Mugshot */}
-          <div
-            style={{
-              width: "88px",
-              height: "88px",
-              background: "#ddd",
-              border: "3px solid #0A0A0A",
-              borderRadius: "2px",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              fontSize: "50px",
-              margin: "0 auto 12px",
-              position: "relative",
-            }}
-          >
-            {character}
-            <div
-              style={{
-                position: "absolute",
-                bottom: 0,
-                left: 0,
-                right: 0,
-                background: "#0A0A0A",
-                color: "#FFD600",
-                fontSize: "9px",
-                fontWeight: 700,
-                textAlign: "center",
-                padding: "2px",
-                letterSpacing: "1px",
-              }}
-            >
-              용의자
-            </div>
-          </div>
+          {/* Mugshot - 수정한 부분 */}
+<div 
+  style={{ 
+    width: "58px", 
+    height: "58px", 
+    background: "rgba(255,255,255,0.1)", 
+    border: "2px solid rgba(255,255,255,0.3)", 
+    borderRadius: "4px", 
+    
+    // ❌ 기존 Flexbox 정렬 방식을 주석 처리하거나 지웁니다.
+    // display: "flex", 
+    // alignItems: "center", 
+    // justifyContent: "center", 
+    
+    // ⭐ [object Object] 밀림 해결을 위한 새로운 정렬 방식 적용
+    textAlign: "center", // 수평 가운데 정렬
+    lineHeight: "54px",  // 수직 가운데 정렬 (높이 58px에서 보더값 4px을 뺀 값 세팅)
+    fontSize: "34px", 
+    overflow: "hidden"    // 이모지가 박스를 벗어나지 않도록 처리
+  }}
+>
+  {character}
+</div>
 
           {/* Name */}
           <div
