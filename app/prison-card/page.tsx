@@ -55,7 +55,7 @@ export default function PrisonCardPage() {
           className="fade-up"
         >
           <div style={{ background: "#FFD600", padding: "14px 16px", textAlign: "center" }}>
-            <div style={{ fontFamily: "'Black Han Sans',sans-serif", fontSize: "20px", color: "#0A0A0A", letterSpacing: "4px" }}>홍익교도소</div>
+            <div style={{ fontFamily: "'Black Han Sans',sans-serif", fontSize: "20px", color: "#0A0A0A", letterSpacing: "4px" }}>교도소</div>
             <div style={{ fontSize: "10px", color: "#555", letterSpacing: "3px" }}>HONGIK CORRECTIONAL FACILITY</div>
           </div>
 

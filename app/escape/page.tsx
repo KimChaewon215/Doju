@@ -217,7 +217,7 @@ export default function EscapePage() {
                 transition: "all 0.15s",
               }}
             >
-              📌 등록
+              등록
             </button>
           </div>
 
